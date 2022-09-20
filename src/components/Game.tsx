@@ -10,10 +10,8 @@ import Inventory from './Inventory';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     buyItem,
-    increment,
     generateLines,
     Item,
-    totalMultiplierSelector,
     linesSelector,
     ownedItemsSelector
 } from '../modules/game';
@@ -25,8 +23,6 @@ const Game = () => {
     const lines = useSelector(linesSelector)
     const ownedItems = useSelector(ownedItemsSelector)
     const linesPerSecond = useSelector((state:RootState) => state.game.linesPerSecond)
-
-    const params = useParams()
 
     const handleGenerateLines = (lineNumber = 1) => {
         dispatch(generateLines({lines: lineNumber}))
@@ -42,7 +38,6 @@ const Game = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            //dispatch(loop())
         }, 100)
 
         return () => clearInterval(interval)

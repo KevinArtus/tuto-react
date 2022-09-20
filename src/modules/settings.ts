@@ -25,9 +25,6 @@ const settingsSlice = createSlice({
     }
 })
 
-export const itemSelector = (state: State) => state.storeItems
-export const reducer = { settingsSlice }
-
 export const {
     addItem
 } = settingsSlice.actions

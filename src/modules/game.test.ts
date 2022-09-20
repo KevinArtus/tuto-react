@@ -57,15 +57,4 @@ describe('Game', () => {
     expect(state.lines).toEqual(40);
     expect(state.linesPerSecond).toEqual(12);
   });
-
-  it('should select lines', function () {
-    const state: SelectableStates = {
-      game: {
-        ...initialState,
-        lines: 10
-      }
-    }
-
-    expect(linesSelector(state)).toEqual(10);
-  });
 })

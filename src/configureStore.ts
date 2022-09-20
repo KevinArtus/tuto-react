@@ -6,7 +6,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 const configureStore = () => {
   const store = createStore(rootReducer, composeWithDevTools(
     applyMiddleware(),
-    // other store enhancers if any
   ))
 
   return store

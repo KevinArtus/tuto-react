@@ -6,7 +6,6 @@ const Main = () => {
         <>
             <header><h1>Mon jeu !</h1></header>
             <Outlet />
-            <footer>App faite par Nathan D.</footer>
         </>
     )
 }

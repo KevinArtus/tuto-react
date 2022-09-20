@@ -66,9 +66,4 @@ export const {
     buyItem
 } = gameSlice.actions
 
-
-// export const totalMultiplierSelector2 = createSelector(
-//     ownedItemsSelector,
-//     (ownedItems: Item[]) => ownedItems.reduce((prev: number, item: Item) => prev + item.multiplier, 0)
-//     )
 export default gameSlice.reducer
