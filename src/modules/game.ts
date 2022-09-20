@@ -1,7 +1,5 @@
-// Actions
-const GENERATE_LINES = 'game::GENERATE_LINES'
-const BUY_ITEM = 'game::BUY_ITEM'
-const LOOP = 'game::LOOP'
+import {createSelector, createSlice} from '@reduxjs/toolkit';
+import { RootState } from '.';
 
 export type Item = {
     name: string;
@@ -9,76 +7,68 @@ export type Item = {
     multiplier: number;
 }
 
-export const generateLines = (lines: number): GenerateLinesAction => ({
-    type: GENERATE_LINES,
-    lines
-})
-
-export const buy = (item: Item): BuyAction => ({
-    type: BUY_ITEM,
-    item
-})
-
-export const loop = (): LoopAction => ({
-    type: LOOP
-})
-
 export type State = {
-    lines: number,
-    ownedItems: Item[],
+    lines: number;
+    ownedItems : Item[];
     linesPerSecond: number
 }
 
-const initialState:State = {
+export type GenerateLinesAction = {
+    payload: {
+        lines: number;
+    }
+}
+
+export type BuyAction = {
+    payload: {
+        item: Item;
+    }
+}
+
+const initialState: State = {
     lines: 0,
     ownedItems: [],
     linesPerSecond: 0
 }
 
-type GenerateLinesAction = {
-    type: typeof GENERATE_LINES
-    lines: number
-}
-
-type BuyAction = {
-    type: typeof BUY_ITEM
-    item: Item
-}
-
-type LoopAction = {
-    type: typeof LOOP
-}
-
-type Action = GenerateLinesAction | BuyAction | LoopAction
-
-export const reducer = (state = initialState, action: Action) => {
-    if (action.type === GENERATE_LINES) {
-        return {
+const gameSlice = createSlice({
+    name: 'game',
+    initialState,
+    reducers: {
+        increment: (state) => ({
             ...state,
-            lines: state.lines + action.lines
-        }
-    }
-
-    if (action.type === BUY_ITEM) {
-        return {
+            lines: state.lines + 1
+        }),
+        generateLines: (state, {payload}: GenerateLinesAction) => ({
             ...state,
-            lines: state.lines - action.item.cost,
-            linesPerSecond: state.linesPerSecond + action.item.multiplier,
-            ownedItems: [...state.ownedItems, action.item]
-        }
-    }
-
-    if (action.type === LOOP) {
-        const multiplier = state.ownedItems.reduce((multiplier, item) => {
-            return multiplier + item.multiplier;
-        }, 0);
-
-        return {
+            lines: state.lines + payload.lines
+        }),
+        buyItem: (state, {payload}: BuyAction) => ({
             ...state,
-            lines: state.lines + multiplier,
-        }
+            lines: state.lines - payload.item.cost,
+            linesPerSecond: state.linesPerSecond + payload.item.multiplier,
+            ownedItems: [...state.ownedItems, payload.item]
+        })
     }
+})
 
-    return state
+export type SelectableStates = Pick<RootState, 'game'>
+
+export const linesSelector = (state: RootState) => state.game.lines
+export const ownedItemsSelector = (state: RootState) => state.game.ownedItems
+export const totalMultiplierSelector = (state: RootState) => {
+    state.game.ownedItems.reduce((prev: number, item: Item) => prev + item.multiplier, 0)
 }
 
+export const {
+    increment,
+    generateLines,
+    buyItem
+} = gameSlice.actions
+
+
+// export const totalMultiplierSelector2 = createSelector(
+//     ownedItemsSelector,
+//     (ownedItems: Item[]) => ownedItems.reduce((prev: number, item: Item) => prev + item.multiplier, 0)
+//     )
+export default gameSlice.reducer

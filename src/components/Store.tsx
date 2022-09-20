@@ -1,5 +1,6 @@
 import items from '../items.json'
-import {Item} from './Game'
+import {Item} from '../modules/game'
+import React from 'react';
 
 type Props = {
     lines: number,

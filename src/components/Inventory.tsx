@@ -1,4 +1,5 @@
-import {Item} from './Game'
+import React from 'react';
+import {Item} from '../modules/game'
 
 type Props = {
     ownedItems: Item[]

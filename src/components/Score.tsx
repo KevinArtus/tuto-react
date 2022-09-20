@@ -1,3 +1,6 @@
+import React from 'react';
+import './Store.css'
+
 type Props = {
     lines: number,
     linesPerSecond: number

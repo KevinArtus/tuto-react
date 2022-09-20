@@ -1,3 +1,5 @@
+import React from 'react';
+import './Gitcoin.css'
 
 type Props = {
     onClick: () => void

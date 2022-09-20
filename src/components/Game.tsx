@@ -1,42 +1,49 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from "react-router-dom";
+import React from 'react';
 
+import './Game.css'
 import Gitcoin from './Gitcoin';
 import Score from './Score';
 import Store from './Store';
 import Inventory from './Inventory';
 import { useSelector, useDispatch } from 'react-redux';
-import { buy, loop, generateLines } from '../modules/game';
+import {
+    buyItem,
+    increment,
+    generateLines,
+    Item,
+    totalMultiplierSelector,
+    linesSelector,
+    ownedItemsSelector
+} from '../modules/game';
 import { RootState } from '../modules';
-
-export type Item = {
-    name: string;
-    cost: number;
-    multiplier: number;
-}
 
 const Game = () => {
     const dispatch = useDispatch()
 
-    const lines = useSelector((state:RootState) => state.game.lines)
-    const ownedItems = useSelector((state:RootState) => state.game.ownedItems)
+    const lines = useSelector(linesSelector)
+    const ownedItems = useSelector(ownedItemsSelector)
     const linesPerSecond = useSelector((state:RootState) => state.game.linesPerSecond)
 
     const params = useParams()
-    //console.log(params.name)
 
     const handleGenerateLines = (lineNumber = 1) => {
-        dispatch(generateLines(lineNumber))
+        dispatch(generateLines({lines: lineNumber}))
     }
 
     const handleBuy = (item: Item) => {
-        dispatch(buy(item))
+        try {
+            dispatch(buyItem({item}))
+        } catch (error) {
+            console.log('C PT!')
+        }
     }
 
     useEffect(() => {
         const interval = setInterval(() => {
             //dispatch(loop())
-        }, 1000)
+        }, 100)
 
         return () => clearInterval(interval)
       }, [lines, ownedItems, linesPerSecond])
