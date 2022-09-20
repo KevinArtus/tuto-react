@@ -1,5 +1,6 @@
 import { Item } from './game';
 import {createSlice} from "@reduxjs/toolkit";
+import {RootState} from "./index";
 
 export type State = {
     storeItems: Item[]
@@ -28,5 +29,7 @@ const settingsSlice = createSlice({
 export const {
     addItem
 } = settingsSlice.actions
+
+export const storeItemsSelector = (state: RootState) => state.settings.storeItems
 
 export default settingsSlice.reducer
